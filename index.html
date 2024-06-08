@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=
+  , initial-scale=1.0"
+		/>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<title>JS Assessment - Shoppint Cart</title>
+	</head>
+	<body class="max-h-dvh bg-gray-200 text-slate-800">
+		<div class="w-5/6 flex flex-col items-center mx-auto bg-slate-300 h-dvh">
+			<header class="my-4">
+				<h1 class="text-3xl font-bold">Shopping Cart</h1>
+			</header>
+			<main>
+				<form
+					id="productForm"
+					class="my-4"
+				>
+					<h2 class="text-2xl font-semibold mb-4">Add Item for Selection</h2>
+					<div class="flex gap-4">
+						<label class="text-lg font-semibold"
+							>Product Name:
+							<input
+								type="text"
+								id="productName"
+								name="productName"
+								value=""
+								class="px-4 py-2 rounded-md"
+						/></label>
+						<label class="text-lg font-semibold"
+							>Price:
+							<input
+								type="number"
+								id="price"
+								name="price"
+								value=""
+								min="0.01"
+								step="0.01"
+								class="px-4 py-2 rounded-md"
+						/></label>
+						<label class="text-lg font-semibold"
+							>Image URL:
+							<input
+								type="url"
+								id="imageURL"
+								name="imageURL"
+								value=""
+								class="px-4 py-2 rounded-md"
+						/></label>
+						<button
+							type="submit"
+							class="text-white font-bold py-2 px-4 bg-slate-800 hover:bg-slate-600 rounded-md"
+						>
+							Create Product
+						</button>
+					</div>
+				</form>
+
+				<section
+					id="productDashboard"
+					class="ring ring-slate-400 rounded-md mt-8"
+				>
+					<div>
+						<ul class="flex flex-col">
+							<li class="flex ml-8 py-4 gap-8">
+								<input
+									type="checkbox"
+									class="accent-orange-500/75 w-4 h-4 self-center"
+									checked
+								/>
+								<div class="w-[100px]">
+									<img
+										src="https://images.unsplash.com/photo-1610562275255-03b7fa0d4655?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+										alt="Product Name 01"
+										class="w-full aspect-square object-cover"
+									/>
+								</div>
+								<div class="flex flex-col gap-2">
+									<h3 class="text-xl font-bold">Product Name 01</h3>
+									<p class="text-lg font-medium">Price: $10.00</p>
+								</div>
+							</li>
+							<li class="flex ml-8 py-4 gap-8">
+								<input
+									type="checkbox"
+									class="accent-orange-500/75 w-4 h-4 self-center"
+								/>
+								<div class="w-[100px]">
+									<img
+										src="https://images.unsplash.com/photo-1610562275255-03b7fa0d4655?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+										alt="Product Name 01"
+										class="w-full aspect-square object-cover"
+									/>
+								</div>
+								<div class="flex flex-col gap-2">
+									<h3 class="text-xl font-bold">Product Name 02</h3>
+									<p class="text-lg font-medium">Price: $5.00</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<button
+						class="text-white font-bold py-2 px-4 bg-orange-500 hover:bg-slate-600 rounded-md ml-8 my-4"
+					>
+						Add to Cart
+					</button>
+				</section>
+				<hr />
+				<section
+					id="cart"
+					class="ring ring-slate-400 rounded-md mt-8"
+				>
+					<div>
+						<ul>
+							<li class="flex ml-8 py-4 gap-8">
+								<div class="w-[100px]">
+									<img
+										src="https://images.unsplash.com/photo-1610562275255-03b7fa0d4655?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+										alt="Product Name 01"
+										class="w-full aspect-square object-cover"
+									/>
+								</div>
+								<div class="flex flex-col gap-1">
+									<h3 class="text-xl font-bold">Product Name 02</h3>
+									<p class="text-lg font-medium">Price: $5.00</p>
+									<button
+										class="text-white font-bold px-4 py-2 bg-red-500 hover:bg-slate-600 rounded-md w-fit"
+									>
+										Remove
+									</button>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<button
+						class="text-white font-bold py-2 px-4 hover:bg-slate-600 rounded-md ml-8 my-4 bg-emerald-600"
+					>
+						Calculate Final Price
+					</button>
+					<p class="font-bold text-3xl py- px-8">You have to pay: 10</p>
+				</section>
+			</main>
+		</div>
+	</body>
+</html>
