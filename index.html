@@ -52,7 +52,6 @@
 								id="imgURL"
 								name="imgURL"
 								class="px-4 py-2 rounded-md"
-								autocomplete="off"
 						/></label>
 						<button
 							type="submit"
@@ -61,10 +60,10 @@
 							Create Product
 						</button>
 					</div>
-					<div
+					<p
 						id="errorMessage"
-						class="mt-4 text-center text-red-600"
-					></div>
+						class="mt-4 text-lg font-semibold text-center text-red-600"
+					></p>
 				</form>
 				<div
 					id="container"
@@ -72,7 +71,7 @@
 				>
 					<section
 						id="productDashboard"
-						class="flex-1 mt-8 rounded-md ring ring-slate-400 h-[600px]"
+						class="flex-1 mt-4 rounded-md ring ring-slate-400 max-h-[550px]"
 					>
 						<div
 							id="productContainer"
@@ -83,7 +82,7 @@
 							</h2>
 							<ul
 								id="productDisplay"
-								class="flex flex-col overflow-y-auto scroll-smooth max-h-[450px]"
+								class="flex flex-col overflow-y-auto scroll-smooth max-h-[400px]"
 							></ul>
 						</div>
 						<div class="flex justify-center">
@@ -98,12 +97,12 @@
 
 					<section
 						id="cart"
-						class="flex-1 mt-8 rounded-md ring ring-slate-400"
+						class="flex-1 mt-4 rounded-md ring ring-slate-400"
 					>
-						<div>
+						<div id="cartContainer">
 							<h2 class="my-4 text-2xl font-semibold text-center">Cart</h2>
-							<ul>
-								<li class="flex gap-8 py-4 ml-8">
+							<ul id="cartDisplay">
+								<!-- <li class="flex gap-8 py-4 ml-8">
 									<div class="w-[100px]">
 										<img
 											src="https://images.unsplash.com/photo-1610562275255-03b7fa0d4655?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -115,12 +114,12 @@
 										<h3 class="text-xl font-bold">Product Name 02</h3>
 										<p class="text-lg font-medium">Price: $5.00</p>
 										<button
-											class="px-4 py-2 font-bold text-white bg-red-500 rounded-md hover:bg-slate-600 w-fit"
+											class="px-4 py-2 font-bold text-white bg-red-500 rounded-md hover:bg-slate-600 w-fit removeBtn"
 										>
 											Remove
 										</button>
 									</div>
-								</li>
+								</li> -->
 							</ul>
 						</div>
 						<button
@@ -133,6 +132,6 @@
 				</div>
 			</main>
 		</div>
-		<script src="script.js"></script>
+		<script src="scripts.js"></script>
 	</body>
 </html>
