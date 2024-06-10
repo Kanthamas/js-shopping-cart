@@ -1,9 +1,11 @@
+//// Select elements
 const productFormEl = document.querySelector("#productForm");
 const productNameEl = document.querySelector("#productName");
 const priceEl = document.querySelector("#price");
 const imgUrlEl = document.querySelector("#imgURL");
 const errorMessageEl = document.querySelector("#errorMessage");
 
+//// Initialize variables
 const products = [];
 let productId = 0;
 
@@ -59,8 +61,11 @@ function createProduct() {
 	resetForm();
 	console.log(`create a new product successfully.`);
 
-	// (// 5. + // 6.) invoke createProductcard(card) after successfully create a new product
-	createProductCard(product);
+	// 5. create a product card
+	const card = createProductCard(product);
+
+	// 6. render each product card in Product Dashboard
+	renderCard("#productDisplay", card);
 
 	// 7. if there is at least one product card in the product dashboard, the "Add to Cart" button display at the bottom of the section
 	if (products) createAddToCardBtn();
@@ -74,11 +79,8 @@ function handleFormSubmit() {
 	});
 }
 
-
-//// Create a product card template that used in (// 5. + // 6.)
-// 5. create a product card
+//// Create a product card template
 function createProductCard(product) {
-	const productDisplay = document.querySelector("#productDisplay");
 	const card = document.createElement("li");
 	card.className = "flex gap-8 py-4 pl-8 mx-4 mb-4 border border-gray-500";
 	card.innerHTML = `
@@ -99,28 +101,25 @@ function createProductCard(product) {
 			<p class="text-lg font-medium">Price: ${formatCurrency(product.price)}</p>
 		</div>
   `;
-
-	// 6. render each product card in Product Dashboard
-	productDisplay.appendChild(card);
+	return card;
 }
 
-// 8. when click "Add to Cart", the selected products are added to Cart section
-function addToCart() {
-	const selectedProducts = isProductSelected();
-	selectedProducts.map((product) => (product.isSelected = true));
-
-	selectedProducts.forEach((product) => createCartCard(product));
-}
+//// Create "Add to Cart" button for Product Dashboard
 function createAddToCardBtn() {
 	const addToCartBtn = document.querySelector("#addToCartBtn");
 	addToCartBtn.classList.remove("hidden");
 	addToCartBtn.addEventListener("click", addToCart);
 }
+// 8. when click "Add to Cart", the selected products are added to Cart section
+function addToCart() {
+	const selectedProducts = isProductSelected();
+	selectedProducts.map((product) => (product.isSelected = true));
+	selectedProducts.forEach((product) => createCartCard(product));
+}
 
-//// Handle user selection items from the product dashboard. 
+//// Handle user selection items from the product dashboard.
 function productDashboard() {
 	// 9. Users can select multiple products at once
-	
 }
 
 function cart() {
@@ -161,4 +160,10 @@ function formatCurrency(number) {
 		style: "currency",
 		currency: "USD",
 	}).format(number);
+}
+
+//// Render card ////
+function renderCard(parentNode, cardFn) {
+	const parentContainer = document.querySelector(`${parentNode}`);
+	parentContainer.appendChild(cardFn);
 }
