@@ -7,7 +7,9 @@ const errorMessageEl = document.querySelector("#errorMessage");
 
 //// Initialize variables
 const products = [];
-let productId = 0;
+let productId = 100;
+let selectedProducts = [];
+let countProuctsInCart = 0;
 
 const defaultImgURL =
 	"https://st4.depositphotos.com/2495409/19919/i/450/depositphotos_199193024-stock-photo-new-product-concept-illustration-isolated.jpg";
@@ -32,6 +34,15 @@ const mockData = [
 ];
 
 //// Handle form input to create a new item to the product dashboard.
+//// Main function to handle Product Form
+function handleFormSubmit() {
+	productFormEl.addEventListener("submit", (event) => {
+		event.preventDefault();
+		createProduct();
+		// console.log({ products });
+	});
+}
+
 //// Create a new product object and push into products array
 function createProduct() {
 	// 1. get input data
@@ -50,7 +61,7 @@ function createProduct() {
 	// 3. create a new product object and add data
 	const product = {
 		id: productId++,
-		isSeleted: false,
+		isSelected: false,
 		productName,
 		price,
 		imgURL,
@@ -59,7 +70,7 @@ function createProduct() {
 	// 4. push a new product object in products array
 	products.push(product);
 	resetForm();
-	console.log(`create a new product successfully.`);
+	// console.log(`create a new product successfully.`);
 
 	// 5. create a product card
 	const card = createProductCard(product);
@@ -71,17 +82,169 @@ function createProduct() {
 	if (products) createAddToCardBtn();
 }
 
-function handleFormSubmit() {
-	productFormEl.addEventListener("submit", (event) => {
-		event.preventDefault();
-		createProduct();
-		console.log(products);
+//// Create "Add to Cart" button for Product Dashboard
+function createAddToCardBtn() {
+	const addToCartBtn = document.querySelector("#addToCartBtn");
+	addToCartBtn.classList.remove("hidden");
+	addToCartBtn.addEventListener("click", addToCart);
+}
+
+//// Handle user selection items from the product dashboard. Users can select multiple products at once.
+// 8. when click "Add to Cart", the selected products are added to Cart section
+function addToCart() {
+	selectedProducts = filteredProducts();
+	const selectedCards = selectedProducts.map((product) =>
+		createSelectedProductCard(product)
+	);
+	renderCards("#cartDisplay", selectedCards);
+
+	countProuctsInCart = selectedCards.length;
+	// console.log(`countProuctsInCart (addToCart): ${countProuctsInCart} `);
+	displayCalcFinalPriceBtn();
+}
+
+//// Filter selected products
+function filteredProducts() {
+	const checkboxChecked = document.querySelectorAll(
+		`input[type="checkbox"]:checked`
+	);
+
+	// get ID from checked product
+	const selectedProductIDs = Array.from(checkboxChecked).map(
+		(element) => +element.id
+	);
+
+	// find selected products from products using ID
+	const selectedProducts = products.filter((product) => {
+		return selectedProductIDs.find((id) => id === product.id);
+	});
+
+	// change isSelected status from "false" to "true"
+	selectedProducts.map((product) => {
+		product.isSelected = true;
+	});
+
+	return selectedProducts;
+}
+
+// 10. when "Remove" clicked, that product card is removed from the cart
+function removeProductFromCart(id) {
+	const removedProduct = selectedProducts.find((product) => id === product.id);
+	removedProduct.isSelected = false;
+
+	const currentSelectedProducts = selectedProducts.filter(
+		(product) => product.isSelected === true
+	);
+	const currentSelectedCart = currentSelectedProducts.map((product) =>
+		createSelectedProductCard(product)
+	);
+	renderCards("#cartDisplay", currentSelectedCart);
+
+	countProuctsInCart--;
+	// console.log(
+	// 	`countProuctsInCart (removeProductFromCart): ${countProuctsInCart} `
+	// );
+
+	displayCalcFinalPriceBtn();
+}
+
+// 12-1. when "Calculate Final Price" clicked, displays the total price
+//// Create "Calculate Final Price" button for Cart
+function createCalcFinalPriceBtn() {
+	const calcFinalPriceBtn = document.querySelector("#calcFinalPriceBtn");
+	const displayFinalPriceEl = document.querySelector("#displayFinalPrice");
+
+	calcFinalPriceBtn.classList.remove("hidden");
+	displayFinalPriceEl.classList.remove("hidden");
+	displayFinalPriceEl.textContent = "";
+
+	calcFinalPriceBtn.addEventListener("click", () => {
+		const finalPrice = calcFinalPrice();
+		displayFinalPriceEl.textContent = `You have to pay ${formatCurrency(
+			finalPrice
+		)}`;
 	});
 }
 
-//// Create a product card template
+// 11. if there is at least one selected product card in the cart, the "Calculate Final Price" button display at the bottom of the section
+function displayCalcFinalPriceBtn() {
+	countProuctsInCart > 0
+		? createCalcFinalPriceBtn()
+		: removeCalcFinalPriceBtn();
+}
+
+// 12-2. when "Calculate Final Price" clicked, displays the total price
+function calcFinalPrice() {
+	let finalPrice = 0;
+
+	if (countProuctsInCart > 0) {
+		finalPrice = selectedProducts
+			.filter((product) => product.isSelected === true)
+			.reduce((acc, curr) => acc + curr.price, 0);
+	}
+	return finalPrice;
+}
+
+// 12-3. when "Calculate Final Price" clicked, displays the total price
+function removeCalcFinalPriceBtn() {
+	const calcFinalPriceBtn = document.querySelector("#calcFinalPriceBtn");
+	const displayFinalPriceEl = document.querySelector("#displayFinalPrice");
+
+	calcFinalPriceBtn.classList.add("hidden");
+	displayFinalPriceEl.classList.add("hidden");
+	displayFinalPriceEl.textContent = "";
+}
+
+//// Main function
+function productDashboard() {
+	handleFormSubmit();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+	productDashboard();
+
+	// console.log(`scripts.js loaded, we're all good!`);
+});
+
+//// Utility functions
+function isImageUrlValid(imgURL) {
+	const input = new URL(imgURL);
+	const isValid = /\.(jpg|jpeg}png|gif)$/.test(input.pathname);
+	if (isValid) errorMessageEl.textContent = "";
+	return isValid;
+}
+
+function resetForm() {
+	productNameEl.value = "";
+	priceEl.value = "";
+	imgUrlEl.value = "";
+	errorMessageEl.textContent = "";
+}
+
+function formatCurrency(number) {
+	return new Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+	}).format(number);
+}
+
+//// Render a new card (appendChild) ////
+function renderCard(parentNode, cardFn) {
+	const parentContainer = document.querySelector(`${parentNode}`);
+	parentContainer.appendChild(cardFn);
+}
+
+//// Render cards ////
+function renderCards(parentNode, cards) {
+	const parentContainer = document.querySelector(`${parentNode}`);
+	parentContainer.innerHTML = "";
+	cards.forEach((card) => parentContainer.appendChild(card));
+}
+
+//// Create a product card template ////
 function createProductCard(product) {
 	const card = document.createElement("li");
+
 	card.className = "flex gap-8 py-4 pl-8 mx-4 mb-4 border border-gray-500";
 	card.innerHTML = `
 		<input
@@ -104,66 +267,29 @@ function createProductCard(product) {
 	return card;
 }
 
-//// Create "Add to Cart" button for Product Dashboard
-function createAddToCardBtn() {
-	const addToCartBtn = document.querySelector("#addToCartBtn");
-	addToCartBtn.classList.remove("hidden");
-	addToCartBtn.addEventListener("click", addToCart);
-}
-// 8. when click "Add to Cart", the selected products are added to Cart section
-function addToCart() {
-	const selectedProducts = isProductSelected();
-	selectedProducts.map((product) => (product.isSelected = true));
-	selectedProducts.forEach((product) => createCartCard(product));
-}
-
-//// Handle user selection items from the product dashboard.
-function productDashboard() {
-	// 9. Users can select multiple products at once
-}
-
-function cart() {
-	// 10. each selected product card includes "Remove" button
-	// 11. when "Remove" clicked, that product card is removed from the cart
-	// 12. if there is at least one selected product card in the cart, the "Calculate Final Price" button display at the bottom of the section
-	// 13. when "Calculate Final Price" clicked, displays the total price
-}
-
-//// Main function
-function shoppingCart() {
-	handleFormSubmit();
-	console.log(`shopping cart executed.`);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-	shoppingCart();
-	console.log(`scripts.js loaded, we're all good!`);
-});
-
-//// utility functions
-function isImageUrlValid(imgURL) {
-	const input = new URL(imgURL);
-	const isValid = /\.(jpg|jpeg}png|gif)$/.test(input.pathname);
-	if (isValid) errorMessageEl.textContent = "";
-	return isValid;
-}
-
-function resetForm() {
-	productNameEl.value = "";
-	priceEl.value = "";
-	imgUrlEl.value = "";
-	errorMessageEl.textContent = "";
-}
-
-function formatCurrency(number) {
-	return new Intl.NumberFormat("en-US", {
-		style: "currency",
-		currency: "USD",
-	}).format(number);
-}
-
-//// Render card ////
-function renderCard(parentNode, cardFn) {
-	const parentContainer = document.querySelector(`${parentNode}`);
-	parentContainer.appendChild(cardFn);
+//// Create a product card template ////
+// 9. each selected product card includes "Remove" button
+function createSelectedProductCard(product) {
+	const card = document.createElement("li");
+	card.setAttribute("id", `${product.id}`);
+	card.className = "flex gap-8 py-4 pl-8 mx-4 mb-4 border border-gray-500";
+	card.innerHTML = `
+		<div class="w-[100px] border border-slate-300" ">
+			<img
+				src="${product.imgURL}"
+				alt="${product.productName}"
+				class="object-cover w-full aspect-square"
+			/>
+		</div>
+		<div class="flex flex-col gap-2">
+			<h3 class="text-xl font-bold">${product.productName}</h3>
+			<p class="text-lg font-medium">Price: ${formatCurrency(product.price)}</p>
+				<button class="removeBtn px-4 py-2 mb-2 font-bold text-white bg-red-500 rounded-md hover:bg-slate-600 w-fit" onclick="removeProductFromCart(${
+					product.id
+				})"
+			>Remove
+			</button>
+		</div>
+  `;
+	return card;
 }
