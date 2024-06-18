@@ -9,7 +9,7 @@ const errorMessageEl = document.querySelector("#errorMessage");
 const products = [];
 let productId = 100;
 let selectedProducts = [];
-let countProuctsInCart = 0;
+let countProductsInCart = 0;
 
 const defaultImgURL =
 	"https://st4.depositphotos.com/2495409/19919/i/450/depositphotos_199193024-stock-photo-new-product-concept-illustration-isolated.jpg";
@@ -98,8 +98,8 @@ function addToCart() {
 	);
 	renderCards("#cartDisplay", selectedCards);
 
-	countProuctsInCart = selectedCards.length;
-	// console.log(`countProuctsInCart (addToCart): ${countProuctsInCart} `);
+	countProductsInCart = selectedCards.length;
+	// console.log(`countProductsInCart (addToCart): ${countProductsInCart} `);
 	displayCalcFinalPriceBtn();
 }
 
@@ -140,9 +140,9 @@ function removeProductFromCart(id) {
 	);
 	renderCards("#cartDisplay", currentSelectedCart);
 
-	countProuctsInCart--;
+	countProductsInCart--;
 	// console.log(
-	// 	`countProuctsInCart (removeProductFromCart): ${countProuctsInCart} `
+	// 	`countProductsInCart (removeProductFromCart): ${countProductsInCart} `
 	// );
 
 	displayCalcFinalPriceBtn();
@@ -168,7 +168,7 @@ function createCalcFinalPriceBtn() {
 
 // 11. if there is at least one selected product card in the cart, the "Calculate Final Price" button display at the bottom of the section
 function displayCalcFinalPriceBtn() {
-	countProuctsInCart > 0
+	countProductsInCart > 0
 		? createCalcFinalPriceBtn()
 		: removeCalcFinalPriceBtn();
 }
@@ -177,7 +177,7 @@ function displayCalcFinalPriceBtn() {
 function calcFinalPrice() {
 	let finalPrice = 0;
 
-	if (countProuctsInCart > 0) {
+	if (countProductsInCart > 0) {
 		finalPrice = selectedProducts
 			.filter((product) => product.isSelected === true)
 			.reduce((acc, curr) => acc + curr.price, 0);
@@ -267,7 +267,7 @@ function createProductCard(product) {
 	return card;
 }
 
-//// Create a product card template ////
+//// Create a selected product card template ////
 // 9. each selected product card includes "Remove" button
 function createSelectedProductCard(product) {
 	const card = document.createElement("li");

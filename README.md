@@ -52,6 +52,6 @@
 
 ---
 ## UI
-![JS Assessment UI](js-assessmnt-ui.png)
+![JS Assessment UI](js-assessment-ui.png)
 
 ### Video: [Link](https://drive.google.com/file/d/1Th5vwh1TiRKgQJrPC_RJgYtWN-bkmFfY/view?usp=sharing)
