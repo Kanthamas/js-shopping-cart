@@ -284,7 +284,7 @@ function createSelectedProductCard(product) {
 		<div class="flex flex-col gap-2">
 			<h3 class="text-xl font-bold">${product.productName}</h3>
 			<p class="text-lg font-medium">Price: ${formatCurrency(product.price)}</p>
-				<button class="removeBtn px-4 py-2 mb-2 font-bold text-white bg-red-500 rounded-md hover:bg-slate-600 w-fit" onclick="removeProductFromCart(${
+			<button class="removeBtn px-4 py-2 mb-2 font-bold text-white bg-red-500 rounded-md hover:bg-slate-600 w-fit" onclick="removeProductFromCart(${
 					product.id
 				})"
 			>Remove
